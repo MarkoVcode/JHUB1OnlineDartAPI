@@ -1,0 +1,9 @@
+name: JHUB1OnlineRestfulAPI
+version: 0.1.0
+description: JHUB1Online Restful API
+authors:
+- Marek Kaszewski
+dependencies:
+  browser: any
+  restful:
+    git: https://github.com/Mixbook/restful.dart
