@@ -5,19 +5,22 @@ import 'link.dart';
 
 class Agent extends Response {
  
-  String id;
-  DateTime created;
-  String status;
-  DateTime updated;
-  String name;
-  String icon;
-  String color;
-  String description;
-  int sorder;
-  String buildid;
-  DateTime builddate;
-  Link link;
-
+  String _id;
+  String _created;
+  String _status;
+  String _updated;
+  String _name;
+  String _icon;
+  String _color;
+  String _description;
+  int _sorder;
+//  localConfig
+//  remoteConfig
+  String _buildid;
+  String _builddate;
+  Link _link;
+//  attributes
+  
   Agent() {
     
   }
@@ -32,14 +35,17 @@ class Agent extends Response {
   }
   
   void getFromMap(Map parsedMap) {
-    id = parsedMap["id"];
-    status = parsedMap["status"];
-    name = parsedMap["name"];
-    icon = parsedMap["icon"];
-    color = parsedMap["color"];
-    description = parsedMap["description"];
-    buildid = parsedMap["buildid"];
-    link = new Link.fromMap(parsedMap["link"]);
+    _id = parsedMap["id"];
+    _created = parsedMap["created"];
+    _status = parsedMap["status"];
+    _updated = parsedMap["updated"];
+    _name = parsedMap["name"];
+    _icon = parsedMap["icon"];
+    _color = parsedMap["color"];
+    _description = parsedMap["description"];
+    _buildid = parsedMap["buildid"];
+    _builddate = parsedMap["builddate"];
+    _link = new Link.fromMap(parsedMap["link"]);
   }
   
   void createFromMap(Map parsedMap) {
@@ -47,33 +53,50 @@ class Agent extends Response {
   }
   
   String getID() {
-    return id;
+    return _id;
+  }
+  
+  String getCreated() {
+    return _created;
   }
   
   String getStatus() {
-    return status;
+    return _status;
   }
+  
+  String getUpdated() {
+    return _updated;
+  }
+  
   String getName() {
-    return name;
+    return _name;
   }
   
   String getIcon() {
-    return icon;
+    return _icon;
   }
   
   String getColor() {
-    return color;
+    return _color;
   }
   
   String getDescription() {
-    return description;
+    return _description;
+  }
+  
+  int getOrder() {
+    return _sorder;
   }
   
   String getBuildId() {
-    return buildid;
+    return _buildid;
+  }
+  
+  String getBuildDate() {
+    return _builddate;
   }
   
   Link getLink() {
-    return link;
+    return _link;
   }
 }

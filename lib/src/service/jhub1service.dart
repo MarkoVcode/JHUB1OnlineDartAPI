@@ -7,6 +7,7 @@ import '../models/user.dart';
 import '../models/endpoint.dart';
 import '../models/endpoints.dart';
 import '../models/endpointtypes.dart';
+import '../models/delete.dart';
 import "package:restful/restful.dart";
 import 'request_wrapper.dart';
 
@@ -32,22 +33,57 @@ class JHUB1OnlineServices extends Service {
         );   
   }
   
+  /**
+   * Retrives all available agents.
+   * The call back provided returns response object Agents which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getAgents((agents) => populateAgents(agents));
+   */
   void getAgents(Function callback(Agents agents)) {
     agentsAPI.findAll().then((agents) => callback(agents));
   }
   
+  /**
+   * Retrives agent with requested ID.
+   * The call back provided returns response wrapper Agent which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getAgentByID((agent) => showAgentDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
   void getAgentByID(Function callback(Agent agent), String id) {
     agentAPI.find(id).then((agent) => callback(agent));
   }
   
+  /**
+   * Retrives only new endpoints - the ones without assigned endpoint type.
+   * The call back provided returns response wrapper Endpoints which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getNewEndopints((endpoints) => showNewEndpoints(endpoints));
+   */
   void getNewEndopints(Function callback(Endpoints endpoints)) {
 
   }
   
+  /**
+   * Retrives all endpoints - the ones with assigned endpoint type.
+   * The call back provided returns response wrapper Endpoints which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getEndopints((endpoints) => showEndpoints(endpoints));
+   */
   void getEndopints(Function callback(Endpoints endpoints)) {
     
   }
-
+  
+  /**
+   * Retrives endopint with requested ID.
+   * The call back provided returns response wrapper Agent which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getEndopintByID((agent) => showEndpointDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
   void getEndopintByID(Function callback(Endpoint endpoint), String id) {
     
   }
@@ -56,27 +92,57 @@ class JHUB1OnlineServices extends Service {
     
   }
   
+  /**
+   * Retrives all endopint types: system defaults and defined by user.
+   * The call back provided returns response wrapper EndpointTypes which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getEndopintTypes((endpointTypes) => showEndpointTypes(endpointTypes));
+   */
   void getEndopintTypes(Function callback(EndpointTypes endpointTypes)) {
     
   }
   
-  void putEndpoint(Endpoint endpoint) {
+  void putEndpoint(Function callback(Endpoint endpoint), Endpoint endpoint) {
     
   }
   
-  void putAgent(Agent agent) {
+  void putAgent(Function callback(Agent agent), Agent agent) {
+    
+  }
+   
+  /**
+   * Deletes the agent with the agentID,
+   * The call back provided returns response wrapper Delete which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     deleteAgent((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
+  void deleteAgent(String agentID) {
     
   }
   
-  void deleteAgents(List<String> agentIDs) {
+  /**
+   * Deletes the endpoint with the endpointID,
+   * The call back provided returns response wrapper Delete which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     deleteEndpoint((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
+  void deleteEndpoint(Function callback(Delete delete), String endpointID) {
+    
     
   }
-  
-  void deleteEndpoints(List<String> endpointIDs) {
+
+  /**
+   * Deletes the new endpoint with the newEndpointID,
+   * The call back provided returns response wrapper Delete which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     deleteNewEndpoint((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
+  void deleteNewEndpoint(Function callback(Delete delete), String newEndpointID) {
     
-  }
-  
-  void deleteNewEndpoints(List<String> newendpointIDs) {
     
   }
 }

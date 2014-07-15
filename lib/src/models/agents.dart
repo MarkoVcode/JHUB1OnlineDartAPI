@@ -5,8 +5,8 @@ import 'response.dart';
 
 class Agents extends Response {
 
-  List<Agent> agents; 
-  int total;
+  List<Agent> _agents; 
+  int _total;
  
   Agents.error() {}
   
@@ -20,18 +20,18 @@ class Agents extends Response {
   }
   
   void createFromMap(Map parsedMap) {
-    total = parsedMap["total"];
-    agents = new List();
+    _total = parsedMap["total"];
+    _agents = new List();
     for(Map agentMap in parsedMap["agents"]) {
-      agents.add(new Agent.fromMap(agentMap));
+      _agents.add(new Agent.fromMap(agentMap));
     }
   }
   
   int getTotal() {
-    return total;
+    return _total;
   }
 
   List<Agent> getAgents() {
-    return agents;
+    return _agents;
   }
 }

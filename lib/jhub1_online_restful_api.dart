@@ -9,4 +9,5 @@ export 'src/models/endpointtypes.dart';
 export 'src/models/response.dart';
 export 'src/models/link.dart';
 export 'src/models/user.dart';
+export 'src/models/delete.dart';
 export 'src/service/jhub1service.dart';
