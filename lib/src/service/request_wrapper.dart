@@ -13,13 +13,13 @@ class ModelTransform<M> implements Resource {
   ModelTransform(this._resource, this._modelFactory, this._errorHandler);
 
   Future<M> find(id) {
-    return _resource.find(id).then(_transform).catchError(_error);
+    return _resource.find(id).then(_transform).catchError(_errorh);
   }
 
   Future<M> findAll() {
-    return _resource.findAll().then(_transform).catchError(_error);
+    return _resource.findAll().then(_transform).catchError(_errorh);
   }
   
   M _transform(Object json) => _modelFactory(json);
-  M _error(RequestFault error) => _errorHandler(error);
+  M _errorh(RequestFault requestFault) => _errorHandler(requestFault);
 }
