@@ -1,4 +1,4 @@
-library delete;
+library model.delete;
 import 'response.dart';
 
 class Delete extends Response {

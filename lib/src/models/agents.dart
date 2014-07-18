@@ -1,4 +1,4 @@
-library agents;
+library model.agents;
 import 'dart:convert';
 import 'agent.dart';
 import 'response.dart';

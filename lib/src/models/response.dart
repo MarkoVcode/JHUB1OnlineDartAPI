@@ -1,4 +1,4 @@
-library abstractResponse;
+library model.abstractResponse;
 import "package:restful/restful.dart";
 
 abstract class Response {

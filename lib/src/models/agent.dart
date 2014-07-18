@@ -1,4 +1,4 @@
-library agent;
+library model.agent;
 import 'dart:convert';
 import 'response.dart';
 import 'link.dart';
@@ -7,6 +7,7 @@ class Agent extends Response {
  
   String _id;
   String _created;
+  String _timezone;
   String _status;
   String _updated;
   String _name;
@@ -37,6 +38,7 @@ class Agent extends Response {
   void getFromMap(Map parsedMap) {
     _id = parsedMap["id"];
     _created = parsedMap["created"];
+    _timezone = parsedMap["timezone"];
     _status = parsedMap["status"];
     _updated = parsedMap["updated"];
     _name = parsedMap["name"];
@@ -54,6 +56,10 @@ class Agent extends Response {
   
   String getID() {
     return _id;
+  }
+  
+  String getTimezone() {
+    return _timezone;
   }
   
   String getCreated() {

@@ -1,4 +1,4 @@
-library agentsCall;
+library interface;
 
 import 'service.dart';
 import '../models/agents.dart';

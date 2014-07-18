@@ -1,4 +1,4 @@
-library endpointtypes;
+library model.endpointtypes;
 import 'response.dart';
 import 'endpointtype.dart';
 

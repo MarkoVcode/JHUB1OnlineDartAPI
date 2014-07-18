@@ -1,4 +1,4 @@
-library link;
+library model.link;
 
 class Link {
   String href;
