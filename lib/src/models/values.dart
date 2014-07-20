@@ -1,11 +1,13 @@
 library model.values;
 import 'dart:convert';
 import 'value.dart';
+import 'link.dart';
 import 'response.dart';
 
 class Values extends Response {
   
   List<Value> _values; 
+  List<Link> _links;
   int _total;
  
   Values.error() {}
@@ -21,9 +23,12 @@ class Values extends Response {
   
   void createFromMap(Map parsedMap) {
     _total = parsedMap["total"];
-    _values = new List();
+    _values = new List<Value>();
     for(Map agentMap in parsedMap["values"]) {
       _values.add(new Value.fromMap(agentMap));
+    }
+    for(Map agentMap in parsedMap["links"]) {
+      _links.add(new Link.fromMap(agentMap));
     }
   }
   
@@ -33,6 +38,10 @@ class Values extends Response {
 
   List<Value> getValues() {
     return _values;
+  }
+  
+  List<Link> getLinks() {
+    return _links;
   }
   
 }

@@ -6,9 +6,10 @@ import '../models/agent.dart';
 import '../models/user.dart';
 import '../models/endpoint.dart';
 import '../models/endpoints.dart';
-import '../models/endpointtypes.dart';
-import '../models/delete.dart';
+import '../models/types.dart';
+import '../models/eptype.dart';
 import '../models/values.dart';
+import '../models/value.dart';
 import "package:restful/restful.dart";
 import 'request_wrapper.dart';
 import 'package:logging/logging.dart';
@@ -19,11 +20,17 @@ class JHUB1OnlineServices extends Service {
   
   static const String RESOURCE_AGENTS = "agents";
   static const String RESOURCE_ENDPOINTS = "endpoints";
+  static const String RESOURCE_TYPES = "types";
   static const String RESOURCE_VALUES = "values";
   
   ModelTransform<Agent> agentAPI;
   ModelTransform<Agents> agentsAPI; 
   ModelTransform<Values> valuesAPI;
+  ModelTransform<Value> valueAPI;
+  ModelTransform<EpType> typeAPI;
+  ModelTransform<Types> typesAPI;
+  ModelTransform<Endpoint> endpointAPI;
+  ModelTransform<Endpoints> endpointsAPI;
   
   JHUB1OnlineServices() {
     var api = new RestApi(apiUri: "http://127.0.0.1:8081/mock0", format: new JsonFormat());
@@ -41,6 +48,31 @@ class JHUB1OnlineServices extends Service {
         api.resource(RESOURCE_VALUES),
         (json) => new Values()..createFromMap(json),
         (error) => new Values()..setError(error)
+        );
+    valueAPI = new ModelTransform<Value>(
+        api.resource(RESOURCE_VALUES),
+        (json) => new Value()..createFromMap(json),
+        (error) => new Value()..setError(error)
+        );
+    typeAPI = new ModelTransform<EpType>(
+        api.resource(RESOURCE_TYPES),
+        (json) => new EpType()..createFromMap(json),
+        (error) => new EpType()..setError(error)
+        );
+    typesAPI = new ModelTransform<Types>(
+        api.resource(RESOURCE_TYPES),
+        (json) => new Types()..createFromMap(json),
+        (error) => new Types()..setError(error)
+        );
+    endpointAPI = new ModelTransform<Endpoint>(
+        api.resource(RESOURCE_ENDPOINTS),
+        (json) => new Endpoint()..createFromMap(json),
+        (error) => new Endpoint()..setError(error)
+        );
+    endpointsAPI = new ModelTransform<Endpoints>(
+        api.resource(RESOURCE_ENDPOINTS),
+        (json) => new Endpoints()..createFromMap(json),
+        (error) => new Endpoints()..setError(error)
         );
   }
   
@@ -88,17 +120,51 @@ class JHUB1OnlineServices extends Service {
   void getValuesByAgentName(Function callback(Values values), String agentName) {
     valuesAPI.find(agentName).then((values) => callback(values));
   }
+
+  /**
+   * Retrives value identified by address.
+   * The call back provided returns response wrapper Value which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getValueByAddress((value) => doSomethingWithMyValues(value), "tt56rsnixh/testValuesdxv");
+   */
+  void getValueByAddress(Function callback(Value value), String valueAddress) {
+    valueAPI.find(valueAddress).then((value) => callback(value));
+  }
+
+  /**
+   * Retrives all endpoint types.
+   * The call back provided returns response object Types which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getTypes((agents) => populateAgents(agents));
+   */
+  void getTypes(Function callback(Types types)) {
+    typesAPI.findAll().then((types) => callback(types));
+  }
   
   /**
-   * Retrives all endpoints that belong to Agent identified by name.
+   * Retrives endpoint type with requested ID.
+   * The call back provided returns response wrapper EpType which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     getTypeByID((agent) => showAgentDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
+  void getTypeByID(Function callback(EpType type), String id) {
+    typeAPI.find(id).then((type) => callback(type));
+  }
+  
+  
+  /**
+   * Retrives all defined endpoints.
    * The call back provided returns response wrapper Values which
    * in case of error holds RequestFault object and has hasError() flag set 'true'.
    *
    *     getEndopints((endpoints) => showEndpoints(endpoints));
    */
- // void getEndopintsByAgentName(Function callback(Values values), String agentName) {
- //   valuesAPI.find(agentName).then((values) => callback(values));
- // }
+  void getEndopints(Function callback(Endpoints endpoints)) {
+    endpointsAPI.findAll().then((endpoints) => callback(endpoints));
+  }
   
   /**
    * Retrives endopint with requested ID.
@@ -107,25 +173,11 @@ class JHUB1OnlineServices extends Service {
    *
    *     getEndopintByID((agent) => showEndpointDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
    */
-//  void getEndopintByID(Function callback(Endpoint endpoint), String id) {
-//    
- // }
+  void getEndopintByID(Function callback(Endpoint endpoint), String id) {
+    endpointAPI.find(id).then((endpoint) => callback(endpoint));
+  }
   
-//  void getUserByID(Function callback(User user), String id) {
- //   
- // }
-  
-  /**
-   * Retrives all endopint types: system defaults and defined by user.
-   * The call back provided returns response wrapper EndpointTypes which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     getEndopintTypes((endpointTypes) => showEndpointTypes(endpointTypes));
-   */
- // void getEndopintTypes(Function callback(EndpointTypes endpointTypes)) {
- //   
- // }
-  
+
  // void putEndpoint(Function callback(Endpoint endpoint), Endpoint endpoint) {
     
  // }

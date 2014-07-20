@@ -6,10 +6,13 @@ import 'link.dart';
 class Agent extends Response {
  
   String _id;
-  String _created;
+  String _username;
+  int _created_t;
+  String _created_s;
   String _timezone;
   String _status;
-  String _updated;
+  int _updated_t;
+  String _updated_s;
   String _name;
   String _icon;
   String _color;
@@ -18,9 +21,10 @@ class Agent extends Response {
 //  localConfig
 //  remoteConfig
   String _buildid;
-  String _builddate;
-  Link _link;
-//  attributes
+  int _builddate_t;
+  String _builddate_s;
+  List<Link> _links;
+  Map _attributes;
   
   Agent() {
     
@@ -37,17 +41,26 @@ class Agent extends Response {
   
   void getFromMap(Map parsedMap) {
     _id = parsedMap["id"];
-    _created = parsedMap["created"];
+    _username = parsedMap["username"];
+    _created_t = parsedMap["created_t"];
+    _created_s = parsedMap["created_s"];
     _timezone = parsedMap["timezone"];
     _status = parsedMap["status"];
-    _updated = parsedMap["updated"];
+    _updated_t = parsedMap["updated_t"];
+    _updated_s = parsedMap["updated_s"];
     _name = parsedMap["name"];
     _icon = parsedMap["icon"];
     _color = parsedMap["color"];
     _description = parsedMap["description"];
+    _sorder = parsedMap["_sorder"];
     _buildid = parsedMap["buildid"];
-    _builddate = parsedMap["builddate"];
-    _link = new Link.fromMap(parsedMap["link"]);
+    _builddate_t = parsedMap["builddate_t"];
+    _builddate_s = parsedMap["builddate_s"];
+    _links = new List<Link>();
+    for(Map agentMap in parsedMap["links"]) {
+      _links.add(new Link.fromMap(agentMap));
+    }
+    _attributes = parsedMap["attributes"];
   }
   
   void createFromMap(Map parsedMap) {
@@ -62,16 +75,28 @@ class Agent extends Response {
     return _timezone;
   }
   
-  String getCreated() {
-    return _created;
+  String getUsername() {
+    return _username;
+  }
+  
+  String getCreatedString() {
+    return _created_s;
+  }
+  
+  int getCreatedTime() {
+    return _created_t;
   }
   
   String getStatus() {
     return _status;
   }
   
-  String getUpdated() {
-    return _updated;
+  int getUpdatedTime() {
+    return _updated_t;
+  }
+  
+  String getUpdatedString() {
+    return _updated_s;
   }
   
   String getName() {
@@ -98,11 +123,19 @@ class Agent extends Response {
     return _buildid;
   }
   
-  String getBuildDate() {
-    return _builddate;
+  int getBuildDateTime() {
+    return _builddate_t;
   }
   
-  Link getLink() {
-    return _link;
+  String getBuildDateString() {
+    return _builddate_s;
+  }
+  
+  List<Link> getLinks() {
+    return _links;
+  }
+  
+  Map getAttributes() {
+    return _attributes;
   }
 }

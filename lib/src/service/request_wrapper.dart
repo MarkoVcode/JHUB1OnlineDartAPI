@@ -5,7 +5,7 @@ import 'dart:async';
 typedef Object ModelFactory(Object response);
 typedef Object ErrorHandler(RequestFault response);
 
-class ModelTransform<M> implements Resource {
+class ModelTransform<M> {
   Resource _resource;
   ModelFactory _modelFactory;
   ErrorHandler _errorHandler;

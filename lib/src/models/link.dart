@@ -1,18 +1,19 @@
 library model.link;
 
 class Link {
-  String href;
-  String rel;
+  String _href;
+  String _rel;
   
   Link.fromMap(Map map) {
-    href = map["href"];
+    _href = map["href"];
+    _rel = map["rel"];
   }
   
   String getHref() {
-    return href;
+    return _href;
   }
   
   String getRel() {
-    return rel;
+    return _rel;
   }
 }

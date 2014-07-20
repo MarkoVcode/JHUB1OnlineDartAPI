@@ -1,11 +1,13 @@
 library model.agents;
 import 'dart:convert';
 import 'agent.dart';
+import 'link.dart';
 import 'response.dart';
 
 class Agents extends Response {
 
   List<Agent> _agents; 
+  List<Link> _links;
   int _total;
  
   Agents.error() {}
@@ -25,6 +27,9 @@ class Agents extends Response {
     for(Map agentMap in parsedMap["agents"]) {
       _agents.add(new Agent.fromMap(agentMap));
     }
+    for(Map agentMap in parsedMap["links"]) {
+      _links.add(new Link.fromMap(agentMap));
+    }
   }
   
   int getTotal() {
@@ -33,5 +38,9 @@ class Agents extends Response {
 
   List<Agent> getAgents() {
     return _agents;
+  }
+  
+  List<Link> getLinks() {
+    return _links;
   }
 }
