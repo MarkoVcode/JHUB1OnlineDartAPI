@@ -7,3 +7,8 @@ dependencies:
   browser: any
   restful:
     git: https://github.com/Mixbook/restful.dart
+dev_dependencies:
+  js: any
+  logging_handlers: '>=0.5.0'
+  unittest: any
+  

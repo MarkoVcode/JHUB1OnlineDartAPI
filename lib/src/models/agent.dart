@@ -52,7 +52,7 @@ class Agent extends Response {
     _icon = parsedMap["icon"];
     _color = parsedMap["color"];
     _description = parsedMap["description"];
-    _sorder = parsedMap["_sorder"];
+    _sorder = parsedMap["sorder"];
     _buildid = parsedMap["buildid"];
     _builddate_t = parsedMap["builddate_t"];
     _builddate_s = parsedMap["builddate_s"];
@@ -119,7 +119,7 @@ class Agent extends Response {
     return _sorder;
   }
   
-  String getBuildId() {
+  String getBuildID() {
     return _buildid;
   }
   
