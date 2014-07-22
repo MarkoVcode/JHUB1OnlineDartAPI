@@ -8,7 +8,7 @@ void testModelsParserOnEndpoints() {
   group("MapModelConverterOnEndpoints", () {
     test("should have mapped all the properties of Endpoints object", () {
       Endpoints endpoints = new Endpoints.fromJSON(endpointsJSON);
-      expect(endpoints.getTotal(), equals(3));
+      expect(endpoints.getTotal(), equals(1));
       expect(endpoints.getEndpoints().length, equals(1));
       expect(endpoints.hasError(), equals(false));
       expect(endpoints.getLinks().length, equals(1));
@@ -24,12 +24,13 @@ void testModelsParserOnEndpoints() {
       expect(endpoint.getIcon(), equals("agent00001"));
       expect(endpoint.getColor(), equals("#3CB371"));
       expect(endpoint.getOrder(), equals(10));
- //     expect(endpoint.getAddress(), equals("5ipcge8g9i/testValuejkhj"));
- //     expect(endpoint.getAgent() , equals("5ipcge8g9i"));
- //     expect(endpoint.getValue(), equals("true"));
+      expect(endpoint.getAccessType(), equals("????"));
+      expect(endpoint.getSharePolicy() , equals("private"));
+      expect(endpoint.getGeoLoc(), equals(null));
       expect(endpoint.getLinks().length, equals(3));
       expect(endpoint.getLinks().first.getHref(), equals("/values/5ipcge8g9i/testValue22222"));
       expect(endpoint.getLinks().first.getRel(), equals("/values"));
+      //@TODO figure out how to handle configValues if any -
     });
     
   });
@@ -40,7 +41,7 @@ var endpointsJSON = """
     "total":1,
     "links": [{ "href":"/endpoints",
                 "rel":"self"}],
-    "endpoints":{
+    "endpoints":[{
         "id":"V-3N7IV-PFQLM-RRRR82PG6.164",
         "name":"Dasher",
         "icon":"agent00001",
@@ -60,6 +61,6 @@ var endpointsJSON = """
                 "rel":"/endpoints"}],
         "valueaddress":"5ipcge8g9i/testValue22222",
         "typeid":"V-3N7IV-QQQQQ-257K82PG6.164"
-    }
+    }]
 }
 """;

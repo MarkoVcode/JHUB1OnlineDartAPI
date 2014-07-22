@@ -12,5 +12,5 @@ void main() {
   testModelsParserOnAgents();
   testModelsParserOnValues();
   testModelsParserOnEndpoints();
- // testModelsParserOnTypes();
+  testModelsParserOnTypes();
 }

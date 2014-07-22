@@ -38,7 +38,7 @@ class EpType extends Response {
     _name = parsedMap["name"];
     _icon = parsedMap["icon"];
     _color = parsedMap["color"];
-    _sorder = parsedMap["_sorder"];
+    _sorder = parsedMap["sorder"];
     _shortdescription = parsedMap["shortdescription"];
     _longdescription = parsedMap["longdescription"];
     _clazz = parsedMap["class"];

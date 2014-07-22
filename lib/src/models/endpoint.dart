@@ -38,7 +38,7 @@ class Endpoint extends Response {
     _icon = parsedMap["icon"];
     _color = parsedMap["color"];
     _description = parsedMap["description"];
-    _sorder = parsedMap["_sorder"];
+    _sorder = parsedMap["sorder"];
     _accesstype = parsedMap["accesstype"];
     _sharepolicy = parsedMap["sharepolicy"];
     _geolocalization = parsedMap["geolocalization"];
@@ -69,6 +69,18 @@ class Endpoint extends Response {
   
   String getDescription() {
     return _description;
+  }
+  
+  String getAccessType() {
+    return _accesstype;
+  }
+  
+  String getSharePolicy() {
+    return _sharepolicy;
+  }
+  
+  String getGeoLoc() {
+    return _geolocalization;
   }
   
   int getOrder() {

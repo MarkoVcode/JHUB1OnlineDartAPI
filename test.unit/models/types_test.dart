@@ -1,5 +1,44 @@
 library types.unit.test;
 
+import 'package:unittest/unittest.dart';
+import 'package:jhub1onlineapi/src/models/types.dart';
+import 'package:jhub1onlineapi/src/models/eptype.dart';
+
+void testModelsParserOnTypes() {
+  group("MapModelConverterOnTypes", () {
+    test("should have mapped all the properties of Types object", () {
+      Types types = new Types.fromJSON(typesJSON);
+      expect(types.getTotal(), equals(4));
+      expect(types.getTypes().length, equals(4));
+      expect(types.hasError(), equals(false));
+      expect(types.getLinks().length, equals(1));
+      expect(types.getLinks().first.getHref(), equals("/types"));
+      expect(types.getLinks().first.getRel(), equals("self"));
+    });
+    
+    test("should have mapped all the properties of Type object testing type no 1", () {
+      Types types = new Types.fromJSON(typesJSON);
+      EpType type = types.getTypes().first;
+      expect(type.getID(), equals("V-3N7IV-QQQQQ-257K82PG6.164"));
+      expect(type.getCreatedTime() , equals(1391051079000));
+      expect(type.getCreatedString(), equals("11 May 1976 22:12:45"));
+      expect(type.getUpdatedTime(), equals(1391051079000));
+      expect(type.getUpdatedString(), equals("11 May 1976 22:12:45"));
+      expect(type.getName(), equals("Dasher"));
+      expect(type.getIcon(), equals("agent00001"));
+      expect(type.getColor(), equals("#3CB371"));
+      expect(type.getOrder(), equals(10));
+      expect(type.getClass(), equals("integer"));
+      expect(type.getLongDescription(), equals("Integer endpoint 3 for user 1"));
+      expect(type.getShortDescription(), equals("Integer endpoint 3 for user 1"));
+//      expect(type.getLinks().length, equals(1));
+ //     expect(type.getLinks().first.getHref(), equals("/types/V-3N7IV-QQQQQ-257K82PG6.164"));
+ //     expect(type.getLinks().first.getRel(), equals("/types"));
+ //     "valueParamsDef":{?????
+    });
+    
+  });
+}
 
 var typesJSON = """
 {

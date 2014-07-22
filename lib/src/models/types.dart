@@ -26,6 +26,7 @@ class Types extends Response {
     for(Map agentMap in parsedMap["types"]) {
       _types.add(new EpType.fromMap(agentMap));
     }
+    _links = new List<Link>();
     for(Map agentMap in parsedMap["links"]) {
       _links.add(new Link.fromMap(agentMap));
     }
@@ -35,7 +36,7 @@ class Types extends Response {
     return _total;
   }
 
-  List<EpType> getValues() {
+  List<EpType> getTypes() {
     return _types;
   }
   
