@@ -15,7 +15,7 @@ void testModelsParserOnEndpoints() {
       expect(endpoints.getLinks().first.getHref(), equals("/endpoints"));
       expect(endpoints.getLinks().first.getRel(), equals("self"));
     });
-    
+
     test("should have mapped all the properties of Endpoint object testing endpoint no 1", () {
       Endpoints endpoints = new Endpoints.fromJSON(endpointsJSON);
       Endpoint endpoint = endpoints.getEndpoints().first;
@@ -25,14 +25,14 @@ void testModelsParserOnEndpoints() {
       expect(endpoint.getColor(), equals("#3CB371"));
       expect(endpoint.getOrder(), equals(10));
       expect(endpoint.getAccessType(), equals("????"));
-      expect(endpoint.getSharePolicy() , equals("private"));
+      expect(endpoint.getSharePolicy(), equals("private"));
       expect(endpoint.getGeoLoc(), equals(null));
       expect(endpoint.getLinks().length, equals(3));
       expect(endpoint.getLinks().first.getHref(), equals("/values/5ipcge8g9i/testValue22222"));
       expect(endpoint.getLinks().first.getRel(), equals("/values"));
       //@TODO figure out how to handle configValues if any -
     });
-    
+
   });
 }
 

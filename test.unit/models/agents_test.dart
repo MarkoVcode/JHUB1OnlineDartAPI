@@ -14,13 +14,13 @@ void testModelsParserOnAgents() {
       expect(agents.getLinks().length, equals(1));
       expect(agents.getLinks().first.getHref(), equals("/agents"));
     });
-    
+
     test("should have mapped all the properties of Agent object testing agent no 3", () {
       Agents agents = new Agents.fromJSON(agentsJSON);
       Agent agent = agents.getAgents().last;
       expect(agent.getID(), equals("A-KQ50J-QR5DB-9U3ZF35B7.782"));
       expect(agent.getTimezone(), equals("Europe/London"));
-      expect(agent.getCreatedTime() , equals(1391051030000));
+      expect(agent.getCreatedTime(), equals(1391051030000));
       expect(agent.getCreatedString(), equals("11 May 1976 22:12:45"));
       expect(agent.getStatus(), equals("offline"));
       expect(agent.getName(), equals("Cupid"));
@@ -29,19 +29,19 @@ void testModelsParserOnAgents() {
       expect(agent.getDescription(), equals("We're off to never-never land"));
       expect(agent.getOrder(), equals(60));
       expect(agent.getUpdatedString(), equals("13 May 1976 22:12:45"));
-      expect(agent.getUpdatedTime() , equals(1391551030099));
+      expect(agent.getUpdatedTime(), equals(1391551030099));
       expect(agent.getBuildDateString(), equals("13 May 1988 22:12:45"));
       expect(agent.getBuildDateTime(), equals(1391551030000));
       expect(agent.getBuildID(), equals("QQAAZZ"));
       //@TODO: consider the way of handling configs and attributes
-//"localConfig": {"version":0},
-//"remoteConfig": {"version":0},
-  //    "attributes":{
-  //      "att1":"val1",
-  //      "att2":"val2"
-   //   }
+      //"localConfig": {"version":0},
+      //"remoteConfig": {"version":0},
+      //    "attributes":{
+      //      "att1":"val1",
+      //      "att2":"val2"
+      //   }
     });
-    
+
   });
 }
 

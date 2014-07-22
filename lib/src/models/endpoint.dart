@@ -3,7 +3,7 @@ import 'response.dart';
 import 'link.dart';
 
 class Endpoint extends Response {
-  
+
   String _id;
   String _name;
   String _icon;
@@ -17,21 +17,21 @@ class Endpoint extends Response {
   List<Link> _links;
   String _valueaddress;
   String _typeid;
-  
+
   Endpoint.error() {}
-  
+
   Endpoint() {
-    
+
   }
-  
+
   void createFromMap(Map parsedMap) {
     getFromMap(parsedMap);
   }
-  
+
   Endpoint.fromMap(Map parsedMap) {
     getFromMap(parsedMap);
   }
-  
+
   void getFromMap(Map parsedMap) {
     _id = parsedMap["id"];
     _name = parsedMap["name"];
@@ -43,50 +43,50 @@ class Endpoint extends Response {
     _sharepolicy = parsedMap["sharepolicy"];
     _geolocalization = parsedMap["geolocalization"];
     _links = new List<Link>();
-    for(Map agentMap in parsedMap["links"]) {
+    for (Map agentMap in parsedMap["links"]) {
       _links.add(new Link.fromMap(agentMap));
     }
     _configValues = parsedMap["configValues"];
     _valueaddress = parsedMap["valueaddress"];
     _typeid = parsedMap["typeid"];
   }
-  
+
   String getID() {
     return _id;
   }
-  
+
   String getName() {
     return _name;
   }
-  
+
   String getIcon() {
     return _icon;
   }
-  
+
   String getColor() {
     return _color;
   }
-  
+
   String getDescription() {
     return _description;
   }
-  
+
   String getAccessType() {
     return _accesstype;
   }
-  
+
   String getSharePolicy() {
     return _sharepolicy;
   }
-  
+
   String getGeoLoc() {
     return _geolocalization;
   }
-  
+
   int getOrder() {
     return _sorder;
   }
-  
+
   List<Link> getLinks() {
     return _links;
   }

@@ -1,9 +1,8 @@
 library interface;
 
-import 'service.dart';
 import '../models/agents.dart';
 import '../models/agent.dart';
-import '../models/user.dart';
+//import '../models/user.dart';
 import '../models/endpoint.dart';
 import '../models/endpoints.dart';
 import '../models/types.dart';
@@ -16,7 +15,7 @@ import 'package:logging/logging.dart';
 
 Logger _logger = new Logger("restful.request_helper");
 
-class JHUB1OnlineServices extends Service {
+class JHUB1OnlineServices {
   
   static const String RESOURCE_AGENTS = "agents";
   static const String RESOURCE_ENDPOINTS = "endpoints";
@@ -74,6 +73,19 @@ class JHUB1OnlineServices extends Service {
         (json) => new Endpoints()..createFromMap(json),
         (error) => new Endpoints()..setError(error)
         );
+  }
+  
+  String buildURI() {
+    var buffer = new StringBuffer();
+    buffer.write(Properties.PROTOCOL);
+    buffer.write("://");
+    buffer.write(Properties.HOSTNAME);
+    buffer.write(":");
+    buffer.write(Properties.PORT);
+    buffer.write("/");
+    buffer.write(Properties.VERSION);
+    buffer.write("/");
+    return buffer.toString();
   }
   
   /**
@@ -220,4 +232,13 @@ class JHUB1OnlineServices extends Service {
     
     
   //}
+}
+
+class Properties {
+  static const String PROTOCOL = "http";
+  static const String PORT = "8081";
+  static const String VERSION = "mock0";
+  static const String HOSTNAME = "127.0.0.1";
+  static const String SERVICE_AGENT = "";
+  static const String SERVICE_AGENTS = "";
 }

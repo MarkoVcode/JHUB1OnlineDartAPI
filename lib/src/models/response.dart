@@ -2,20 +2,20 @@ library model.abstractResponse;
 import "package:restful/restful.dart";
 
 abstract class Response {
-  
-   bool _isError = false;
-   RequestFault _requestFault;
-   
-   bool hasError() {
-     return _isError;
-   }
-   
-   void setError(RequestFault requestFault) {
-     _isError = true;
-     this._requestFault = requestFault;
-   }
-   
-   /**
+
+  bool _isError = false;
+  RequestFault _requestFault;
+
+  bool hasError() {
+    return _isError;
+  }
+
+  void setError(RequestFault requestFault) {
+    _isError = true;
+    this._requestFault = requestFault;
+  }
+
+  /**
     * Allows access to all custom data attributes (data-*) set on this element.
     *
     * The keys for the map must follow these rules:
@@ -38,11 +38,11 @@ abstract class Response {
     *
     * * [Custom data attributes](http://www.w3.org/TR/html5/global-attributes.html#custom-data-attribute)
     */
-   RequestFault getError() {
-     return _requestFault;
-   }
-   
-   /**
+  RequestFault getError() {
+    return _requestFault;
+  }
+
+  /**
     * Scrolls this element into view.
     *
     * Only one of of the alignment options may be specified at a time.
@@ -59,5 +59,5 @@ abstract class Response {
     * * [scrollIntoView](http://docs.webplatform.org/wiki/dom/methods/scrollIntoView)
     * * [scrollIntoViewIfNeeded](http://docs.webplatform.org/wiki/dom/methods/scrollIntoViewIfNeeded)
     */
-   void createFromMap(Map parsedMap);
+  void createFromMap(Map parsedMap);
 }

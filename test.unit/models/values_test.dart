@@ -15,23 +15,23 @@ void testModelsParserOnValues() {
       expect(values.getLinks().first.getHref(), equals("/values/5ipcge8g9i"));
       expect(values.getLinks().first.getRel(), equals("self"));
     });
-    
+
     test("should have mapped all the properties of Value object testing value no 3", () {
       Values values = new Values.fromJSON(valuesJSON);
       Value value = values.getValues().last;
       expect(value.getID(), equals("V-3N7IV-PFQLM-257K82PG6.164"));
       expect(value.getTimezone(), equals("Europe/London"));
-      expect(value.getCreatedTime() , equals(1391051030000));
+      expect(value.getCreatedTime(), equals(1391051030000));
       expect(value.getCreatedString(), equals("11 May 1976 22:12:45"));
       expect(value.getName(), equals("testValuejkhj"));
       expect(value.getAddress(), equals("5ipcge8g9i/testValuejkhj"));
-      expect(value.getAgent() , equals("5ipcge8g9i"));
+      expect(value.getAgent(), equals("5ipcge8g9i"));
       expect(value.getValue(), equals("true"));
       expect(value.getLinks().length, equals(2));
       expect(value.getLinks().first.getHref(), equals("/agents/A-1E6B9-5P8TQ-HJ9JKDL0Y.733"));
       expect(value.getLinks().first.getRel(), equals("/agents"));
     });
-    
+
   });
 }
 

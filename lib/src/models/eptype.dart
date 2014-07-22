@@ -1,8 +1,9 @@
 library model.type;
 import 'response.dart';
+import 'link.dart';
 
 class EpType extends Response {
-  
+
   String _id;
   int _created_t;
   String _created_s;
@@ -16,15 +17,16 @@ class EpType extends Response {
   String _longdescription;
   Map _valueParamsDef;
   String _clazz;
-  
+  List<Link> _links;
+
   EpType() {
-    
+
   }
-  
+
   EpType.fromMap(Map parsedMap) {
     getFromMap(parsedMap);
   }
-  
+
   void createFromMap(Map parsedMap) {
     getFromMap(parsedMap);
   }
@@ -34,7 +36,7 @@ class EpType extends Response {
     _created_t = parsedMap["created_t"];
     _created_s = parsedMap["created_s"];
     _updated_t = parsedMap["updated_t"];
-    _updated_s = parsedMap["updated_s"]; 
+    _updated_s = parsedMap["updated_s"];
     _name = parsedMap["name"];
     _icon = parsedMap["icon"];
     _color = parsedMap["color"];
@@ -43,12 +45,16 @@ class EpType extends Response {
     _longdescription = parsedMap["longdescription"];
     _clazz = parsedMap["class"];
     _valueParamsDef = parsedMap["valueParamsDef"];
+    _links = new List<Link>();
+    for (Map agentMap in parsedMap["links"]) {
+      _links.add(new Link.fromMap(agentMap));
+    }
   }
-  
+
   String getID() {
     return _id;
   }
-  
+
   String getCreatedString() {
     return _created_s;
   }
@@ -64,23 +70,23 @@ class EpType extends Response {
   int getUpdatedTime() {
     return _created_t;
   }
-  
+
   String getName() {
     return _name;
   }
-  
+
   String getIcon() {
     return _icon;
   }
-  
+
   String getColor() {
     return _color;
   }
-  
+
   int getOrder() {
     return _sorder;
   }
-  
+
   String getShortDescription() {
     return _shortdescription;
   }
@@ -93,8 +99,12 @@ class EpType extends Response {
     return _valueParamsDef;
   }
 
+  List<Link> getLinks() {
+    return _links;
+  }
+
   String getClass() {
     return _clazz;
   }
-  
+
 }

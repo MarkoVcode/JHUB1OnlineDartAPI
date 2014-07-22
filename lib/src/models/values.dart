@@ -5,34 +5,34 @@ import 'link.dart';
 import 'response.dart';
 
 class Values extends Response {
-  
-  List<Value> _values; 
+
+  List<Value> _values;
   List<Link> _links;
   int _total;
- 
+
   Values.error() {}
-  
+
   Values() {
-    
+
   }
-  
-  Values.fromJSON(String json){
+
+  Values.fromJSON(String json) {
     Map parsedMap = JSON.decode(json);
     createFromMap(parsedMap);
   }
-  
+
   void createFromMap(Map parsedMap) {
     _total = parsedMap["total"];
     _values = new List<Value>();
-    for(Map agentMap in parsedMap["values"]) {
+    for (Map agentMap in parsedMap["values"]) {
       _values.add(new Value.fromMap(agentMap));
     }
     _links = new List<Link>();
-    for(Map agentMap in parsedMap["links"]) {
+    for (Map agentMap in parsedMap["links"]) {
       _links.add(new Link.fromMap(agentMap));
     }
   }
-  
+
   int getTotal() {
     return _total;
   }
@@ -40,9 +40,9 @@ class Values extends Response {
   List<Value> getValues() {
     return _values;
   }
-  
+
   List<Link> getLinks() {
     return _links;
   }
-  
+
 }

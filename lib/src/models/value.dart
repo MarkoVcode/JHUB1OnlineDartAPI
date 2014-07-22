@@ -2,7 +2,7 @@ library model.value;
 import "link.dart";
 import 'response.dart';
 
-class Value extends Response  {
+class Value extends Response {
 
   String _id;
   String _address;
@@ -15,13 +15,13 @@ class Value extends Response  {
   List<Link> _links;
 
   Value() {
-    
+
   }
-  
+
   Value.fromMap(Map parsedMap) {
     getFromMap(parsedMap);
   }
-  
+
   void createFromMap(Map parsedMap) {
     getFromMap(parsedMap);
   }
@@ -29,14 +29,14 @@ class Value extends Response  {
   void getFromMap(Map parsedMap) {
     _id = parsedMap["id"];
     _created_t = parsedMap["created_t"];
-    _created_s = parsedMap["created_s"];   
+    _created_s = parsedMap["created_s"];
     _address = parsedMap["address"];
     _timezone = parsedMap["timezone"];
     _name = parsedMap["name"];
     _agent = parsedMap["agent"];
     _value = parsedMap["value"];
     _links = new List<Link>();
-    for(Map agentMap in parsedMap["links"]) {
+    for (Map agentMap in parsedMap["links"]) {
       _links.add(new Link.fromMap(agentMap));
     }
   }
@@ -52,7 +52,7 @@ class Value extends Response  {
   int getCreatedTime() {
     return _created_t;
   }
-  
+
   String getName() {
     return _name;
   }
@@ -60,7 +60,7 @@ class Value extends Response  {
   String getTimezone() {
     return _timezone;
   }
-  
+
   String getValue() {
     return _value;
   }
