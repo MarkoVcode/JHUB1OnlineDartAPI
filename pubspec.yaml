@@ -1,5 +1,5 @@
 name: jhub1onlineapi
-version: 0.1.4
+version: 0.1.5
 author: Marek Kaszewski
 description: API to the JHUB1 Online system
 dependencies:
