@@ -27,6 +27,7 @@ class Values extends Response {
     for(Map agentMap in parsedMap["values"]) {
       _values.add(new Value.fromMap(agentMap));
     }
+    _links = new List<Link>();
     for(Map agentMap in parsedMap["links"]) {
       _links.add(new Link.fromMap(agentMap));
     }

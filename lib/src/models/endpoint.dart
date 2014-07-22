@@ -74,4 +74,8 @@ class Endpoint extends Response {
   int getOrder() {
     return _sorder;
   }
+  
+  List<Link> getLinks() {
+    return _links;
+  }
 }

@@ -27,6 +27,7 @@ class Endpoints extends Response {
     for(Map agentMap in parsedMap["endpoints"]) {
       _endpoints.add(new Endpoint.fromMap(agentMap));
     }
+    _links = new List();
     for(Map agentMap in parsedMap["links"]) {
       _links.add(new Link.fromMap(agentMap));
     }

@@ -1,8 +1,7 @@
-name: jhub1onlinerestfulapi
+name: jhub1onlineapi
 version: 0.1.4
-description: JHUB1Online Restful API
-authors:
-- Marek Kaszewski
+author: Marek Kaszewski
+description: API to the JHUB1 Online system
 dependencies:
   browser: any
   restful:
@@ -11,4 +10,3 @@ dev_dependencies:
   js: any
   logging_handlers: '>=0.5.0'
   unittest: any
-  

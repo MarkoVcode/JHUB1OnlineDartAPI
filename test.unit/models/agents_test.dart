@@ -1,11 +1,11 @@
 library agents.unit.test;
 
 import 'package:unittest/unittest.dart';
-import 'package:jhub1onlinerestfulapi/src/models/agents.dart';
-import 'package:jhub1onlinerestfulapi/src/models/agent.dart';
+import 'package:jhub1onlineapi/src/models/agents.dart';
+import 'package:jhub1onlineapi/src/models/agent.dart';
 
-void testModelsParser() {
-  group("MapModelConverter", () {
+void testModelsParserOnAgents() {
+  group("MapModelConverterOnAgents", () {
     test("should have mapped all the properties of Agents object", () {
       Agents agents = new Agents.fromJSON(agentsJSON);
       expect(agents.getTotal(), equals(3));

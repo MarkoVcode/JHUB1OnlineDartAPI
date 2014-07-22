@@ -73,4 +73,7 @@ class Value extends Response  {
     return _address;
   }
 
+  List<Link> getLinks() {
+    return _links;
+  }
 }
