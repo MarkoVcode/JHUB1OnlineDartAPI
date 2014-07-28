@@ -12,6 +12,7 @@ import '../models/value.dart';
 import "package:restful/restful.dart";
 import 'request_wrapper.dart';
 import 'package:logging/logging.dart';
+import 'dart:async';
 
 Logger _logger = new Logger("restful.request_helper");
 
@@ -100,6 +101,10 @@ class JHUB1OnlineServices {
     _logger.warning("BLA");
   }
   
+  Future<Agents> getAgentsFuture() {
+    return agentsAPI.findAll();
+  }
+  
   /**
    * Retrives agent with requested ID.
    * The call back provided returns response wrapper Agent which
@@ -111,6 +116,9 @@ class JHUB1OnlineServices {
     agentAPI.find(id).then((agent) => callback(agent));
   }
   
+  Future<Agent> getAgentByIDFuture(String id) {
+    return agentAPI.find(id);
+  }
   /**
    * Retrives only values of new endpoints - the ones without assigned endpoint type.
    * The call back provided returns response wrapper Values which
