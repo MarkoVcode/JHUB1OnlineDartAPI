@@ -9,6 +9,7 @@ import '../models/types.dart';
 import '../models/eptype.dart';
 import '../models/values.dart';
 import '../models/value.dart';
+import '../models/ping.dart';
 import "package:restful/restful.dart";
 import 'request_wrapper.dart';
 import 'package:logging/logging.dart';
@@ -22,6 +23,7 @@ class JHUB1OnlineServices {
   static const String RESOURCE_ENDPOINTS = "endpoints";
   static const String RESOURCE_TYPES = "types";
   static const String RESOURCE_VALUES = "values";
+  static const String RESOURCE_PING = "ping";
   
   ModelTransform<Agent> agentAPI;
   ModelTransform<Agents> agentsAPI; 
@@ -31,6 +33,7 @@ class JHUB1OnlineServices {
   ModelTransform<Types> typesAPI;
   ModelTransform<Endpoint> endpointAPI;
   ModelTransform<Endpoints> endpointsAPI;
+  ModelTransform<Ping> pingAPI;
   
   JHUB1OnlineServices() {
     var api = new RestApi(apiUri: "http://127.0.0.1:8081/mock0", format: new JsonFormat());
@@ -74,6 +77,11 @@ class JHUB1OnlineServices {
         (json) => new Endpoints()..createFromMap(json),
         (error) => new Endpoints()..setError(error)
         );
+    pingAPI = new ModelTransform<Ping>(
+        api.resource(RESOURCE_PING),
+        (json) => new Ping()..createFromMap(json),
+        (error) => new Ping()..setError(error)
+        );
   }
   
   String buildURI() {
@@ -101,6 +109,14 @@ class JHUB1OnlineServices {
     _logger.warning("BLA");
   }
   
+  /**
+   * Retrives all available agents.
+   * The call back provided returns response object Agents which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *      Future<Agents> agents = jhub1online.getAgentsFuture();
+   *      agents.then((agents) => populateAgents(agents));
+   */
   Future<Agents> getAgentsFuture() {
     return agentsAPI.findAll();
   }
@@ -115,7 +131,15 @@ class JHUB1OnlineServices {
   void getAgentByID(Function callback(Agent agent), String id) {
     agentAPI.find(id).then((agent) => callback(agent));
   }
-  
+
+  /**
+   * Retrives agent with requested ID .
+   * The call back provided returns response wrapper Agent which
+   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   *
+   *     Future<Agent> agent = jhub1online.getAgentByIDFuture("A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   *     agent.then((agent) => showAgentDetails(agent));
+   */
   Future<Agent> getAgentByIDFuture(String id) {
     return agentAPI.find(id);
   }
@@ -198,6 +222,11 @@ class JHUB1OnlineServices {
   }
   
 
+  
+  
+  Future<Ping> ping() {
+    return pingAPI.findAll();
+  }
  // void putEndpoint(Function callback(Endpoint endpoint), Endpoint endpoint) {
     
  // }
