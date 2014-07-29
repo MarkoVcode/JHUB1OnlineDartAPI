@@ -12,4 +12,5 @@ export 'src/models/user.dart';
 export 'src/models/value.dart';
 export 'src/models/values.dart';
 export 'src/models/delete.dart';
+export 'src/models/ping.dart';
 export 'src/service/jhub1service.dart';
