@@ -37,6 +37,8 @@ class JHUB1OnlineServices {
   
   JHUB1OnlineServices() {
     var api = new RestApi(apiUri: "http://127.0.0.1:8081/mock0", format: new JsonFormat());
+    api.resource(RESOURCE_VALUES);
+    
     agentAPI = new ModelTransform<Agent>(
         api.resource(RESOURCE_AGENTS),
         (json) => new Agent()..createFromMap(json),

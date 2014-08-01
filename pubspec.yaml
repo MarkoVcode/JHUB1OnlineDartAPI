@@ -5,7 +5,7 @@ description: API to the JHUB1 Online system
 dependencies:
   browser: any
   restful:
-    git: https://github.com/Mixbook/restful.dart
+    git: https://github.com/MarkoVcode/restful.dart
 dev_dependencies:
   js: any
   logging_handlers: '>=0.5.0'
