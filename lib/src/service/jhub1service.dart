@@ -36,54 +36,35 @@ class JHUB1OnlineServices {
   ModelTransform<Ping> pingAPI;
   
   JHUB1OnlineServices() {
-    var api = new RestApi(apiUri: "http://127.0.0.1:8081/mock0", format: new JsonFormat());
-    api.resource(RESOURCE_VALUES);
+    var api = new RestApi("http://127.0.0.1:8081/mock0", new JsonFormat(), true);
     
     agentAPI = new ModelTransform<Agent>(
         api.resource(RESOURCE_AGENTS),
-        (json) => new Agent()..createFromMap(json),
-        (error) => new Agent()..setError(error)
-        );   
+        (request) => new Agent()..createFromRestRequest(request));   
     agentsAPI = new ModelTransform<Agents>(
         api.resource(RESOURCE_AGENTS),
-        (json) => new Agents()..createFromMap(json),
-        (error) => new Agents()..setError(error)
-        ); 
+        (request) => new Agents()..createFromRestRequest(request)); 
     valuesAPI = new ModelTransform<Values>(
         api.resource(RESOURCE_VALUES),
-        (json) => new Values()..createFromMap(json),
-        (error) => new Values()..setError(error)
-        );
+        (request) => new Values()..createFromRestRequest(request));
     valueAPI = new ModelTransform<Value>(
         api.resource(RESOURCE_VALUES),
-        (json) => new Value()..createFromMap(json),
-        (error) => new Value()..setError(error)
-        );
+        (request) => new Value()..createFromRestRequest(request));
     typeAPI = new ModelTransform<EpType>(
         api.resource(RESOURCE_TYPES),
-        (json) => new EpType()..createFromMap(json),
-        (error) => new EpType()..setError(error)
-        );
+        (request) => new EpType()..createFromRestRequest(request));
     typesAPI = new ModelTransform<Types>(
         api.resource(RESOURCE_TYPES),
-        (json) => new Types()..createFromMap(json),
-        (error) => new Types()..setError(error)
-        );
+        (request) => new Types()..createFromRestRequest(request));
     endpointAPI = new ModelTransform<Endpoint>(
         api.resource(RESOURCE_ENDPOINTS),
-        (json) => new Endpoint()..createFromMap(json),
-        (error) => new Endpoint()..setError(error)
-        );
+        (request) => new Endpoint()..createFromRestRequest(request));
     endpointsAPI = new ModelTransform<Endpoints>(
         api.resource(RESOURCE_ENDPOINTS),
-        (json) => new Endpoints()..createFromMap(json),
-        (error) => new Endpoints()..setError(error)
-        );
+        (request) => new Endpoints()..createFromRestRequest(request));
     pingAPI = new ModelTransform<Ping>(
         api.resource(RESOURCE_PING),
-        (json) => new Ping()..createFromMap(json),
-        (error) => new Ping()..setError(error)
-        );
+        (request) => new Ping()..createFromRestRequest(request));
   }
   
   String buildURI() {

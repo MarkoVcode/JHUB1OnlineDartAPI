@@ -4,15 +4,10 @@ import "package:restful/restful.dart";
 abstract class Response {
 
   bool _isError = false;
-  RequestFault _requestFault;
+  RestRequest _restRequest;
 
   bool hasError() {
     return _isError;
-  }
-
-  void setError(RequestFault requestFault) {
-    _isError = true;
-    this._requestFault = requestFault;
   }
 
   /**
@@ -38,8 +33,8 @@ abstract class Response {
     *
     * * [Custom data attributes](http://www.w3.org/TR/html5/global-attributes.html#custom-data-attribute)
     */
-  RequestFault getError() {
-    return _requestFault;
+  RestRequest getRestRequest() {
+    return _restRequest;
   }
 
   /**
@@ -60,4 +55,18 @@ abstract class Response {
     * * [scrollIntoViewIfNeeded](http://docs.webplatform.org/wiki/dom/methods/scrollIntoViewIfNeeded)
     */
   void createFromMap(Map parsedMap);
+  
+  /**
+   * This method is valid only for simplest case (most of the time GET) for asynchronous http
+   * operations it will have to handle also other status codes than 200
+   * It should be implemented on concrete. 
+   */
+  void createFromRestRequest(RestRequest rr) {
+    _restRequest = rr;
+    if(rr.request.status == 200) {
+      createFromMap(rr.getData());
+    } else {
+      _isError = true;
+    }
+  }
 }
