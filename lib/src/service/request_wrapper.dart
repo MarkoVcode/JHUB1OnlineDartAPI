@@ -6,7 +6,7 @@ typedef Object ModelFactory(Object response);
 typedef Object ErrorHandler(Object response);
 
 class ModelTransform<M> {
-  CachedResource _resource;
+  RamCachedResource _resource;
   ModelFactory _modelFactory;
   ErrorHandler _errorHandler;
 

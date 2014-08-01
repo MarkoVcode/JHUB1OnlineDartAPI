@@ -36,34 +36,34 @@ class JHUB1OnlineServices {
   ModelTransform<Ping> pingAPI;
   
   JHUB1OnlineServices() {
-    var api = new RestApi("http://127.0.0.1:8081/mock0", new JsonFormat(), true);
+    var api = new RestApi("http://127.0.0.1:8081/mock0", new JsonFormat());
     
     agentAPI = new ModelTransform<Agent>(
-        api.resource(RESOURCE_AGENTS),
+        api.cachedResource(RESOURCE_AGENTS),
         (request) => new Agent()..createFromRestRequest(request));   
     agentsAPI = new ModelTransform<Agents>(
-        api.resource(RESOURCE_AGENTS),
+        api.cachedResource(RESOURCE_AGENTS),
         (request) => new Agents()..createFromRestRequest(request)); 
     valuesAPI = new ModelTransform<Values>(
-        api.resource(RESOURCE_VALUES),
+        api.cachedResource(RESOURCE_VALUES),
         (request) => new Values()..createFromRestRequest(request));
     valueAPI = new ModelTransform<Value>(
-        api.resource(RESOURCE_VALUES),
+        api.cachedResource(RESOURCE_VALUES),
         (request) => new Value()..createFromRestRequest(request));
     typeAPI = new ModelTransform<EpType>(
-        api.resource(RESOURCE_TYPES),
+        api.cachedResource(RESOURCE_TYPES),
         (request) => new EpType()..createFromRestRequest(request));
     typesAPI = new ModelTransform<Types>(
-        api.resource(RESOURCE_TYPES),
+        api.cachedResource(RESOURCE_TYPES),
         (request) => new Types()..createFromRestRequest(request));
     endpointAPI = new ModelTransform<Endpoint>(
-        api.resource(RESOURCE_ENDPOINTS),
+        api.cachedResource(RESOURCE_ENDPOINTS),
         (request) => new Endpoint()..createFromRestRequest(request));
     endpointsAPI = new ModelTransform<Endpoints>(
-        api.resource(RESOURCE_ENDPOINTS),
+        api.cachedResource(RESOURCE_ENDPOINTS),
         (request) => new Endpoints()..createFromRestRequest(request));
     pingAPI = new ModelTransform<Ping>(
-        api.resource(RESOURCE_PING),
+        api.cachedResource(RESOURCE_PING, 10000),
         (request) => new Ping()..createFromRestRequest(request));
   }
   
