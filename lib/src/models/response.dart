@@ -1,5 +1,5 @@
 library model.abstractResponse;
-import "package:restful/restful.dart";
+import "package:restfulplus/restfulplus.dart";
 
 abstract class Response {
 
