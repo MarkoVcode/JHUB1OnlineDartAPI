@@ -1,16 +1,16 @@
-library wr;
-import "package:restful/restful.dart";
+library non_cached_decorator;
+import "package:restfulplus/restfulplus.dart";
 import 'dart:async';
 
 typedef Object ModelFactory(Object response);
 typedef Object ErrorHandler(Object response);
 
-class ModelTransform<M> {
-  RamCachedResource _resource;
+class NonCachedModelTransform<M> {
+  NonCachedResource _resource;
   ModelFactory _modelFactory;
   ErrorHandler _errorHandler;
 
-  ModelTransform(this._resource, this._modelFactory);
+  NonCachedModelTransform(this._resource, this._modelFactory);
 
   Future<M> find(id) {
     return _resource.find(id).then(_transform);
@@ -20,6 +20,10 @@ class ModelTransform<M> {
     return _resource.findAll().then(_transform);
   }
 
+  Future<M> query(Map<String, Object> params) {
+    return _resource.query(params).then(_transform);
+  }
+  
   Future<M> delete(id) {
     return _resource.delete(id).then(_transform);
   }

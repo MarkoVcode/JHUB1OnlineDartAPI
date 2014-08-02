@@ -4,7 +4,7 @@ author: Marek Kaszewski
 description: API to the JHUB1 Online system
 dependencies:
   browser: any
-  restful:
+  restfulplus:
     git: https://github.com/MarkoVcode/restful.dart
 dev_dependencies:
   js: any

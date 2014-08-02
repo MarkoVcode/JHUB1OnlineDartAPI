@@ -10,8 +10,10 @@ import '../models/eptype.dart';
 import '../models/values.dart';
 import '../models/value.dart';
 import '../models/ping.dart';
-import "package:restful/restful.dart";
-import 'request_wrapper.dart';
+import "package:restfulplus/restfulplus.dart";
+import 'noncached_model_trans.dart';
+import 'ramcached_model_trans.dart';
+import 'jhub1service_config.dart';
 import 'package:logging/logging.dart';
 import 'dart:async';
 
@@ -25,59 +27,46 @@ class JHUB1OnlineServices {
   static const String RESOURCE_VALUES = "values";
   static const String RESOURCE_PING = "ping";
   
-  ModelTransform<Agent> agentAPI;
-  ModelTransform<Agents> agentsAPI; 
-  ModelTransform<Values> valuesAPI;
-  ModelTransform<Value> valueAPI;
-  ModelTransform<EpType> typeAPI;
-  ModelTransform<Types> typesAPI;
-  ModelTransform<Endpoint> endpointAPI;
-  ModelTransform<Endpoints> endpointsAPI;
-  ModelTransform<Ping> pingAPI;
+  RamCachedModelTransform<Agent> agentAPI;
+  RamCachedModelTransform<Agents> agentsAPI; 
+  RamCachedModelTransform<Values> valuesAPI;
+  RamCachedModelTransform<Value> valueAPI;
+  RamCachedModelTransform<EpType> typeAPI;
+  RamCachedModelTransform<Types> typesAPI;
+  RamCachedModelTransform<Endpoint> endpointAPI;
+  RamCachedModelTransform<Endpoints> endpointsAPI;
+  NonCachedModelTransform<Ping> pingAPI;
   
-  JHUB1OnlineServices() {
-    var api = new RestApi("http://127.0.0.1:8081/mock0", new JsonFormat());
+  JHUB1OnlineServices(ServicesConfig confg) {
+    var api = new RestApi(confg.getURI(), new JsonFormat());
     
-    agentAPI = new ModelTransform<Agent>(
-        api.cachedResource(RESOURCE_AGENTS),
+    agentAPI = new  RamCachedModelTransform<Agent>(
+        api.ramCachedResource(RESOURCE_AGENTS, confg.getCacheInvalidateTimeout()),
         (request) => new Agent()..createFromRestRequest(request));   
-    agentsAPI = new ModelTransform<Agents>(
-        api.cachedResource(RESOURCE_AGENTS),
+    agentsAPI = new RamCachedModelTransform<Agents>(
+        api.ramCachedResource(RESOURCE_AGENTS, confg.getCacheInvalidateTimeout()),
         (request) => new Agents()..createFromRestRequest(request)); 
-    valuesAPI = new ModelTransform<Values>(
-        api.cachedResource(RESOURCE_VALUES),
+    valuesAPI = new RamCachedModelTransform<Values>(
+        api.ramCachedResource(RESOURCE_VALUES, confg.getCacheInvalidateTimeout()),
         (request) => new Values()..createFromRestRequest(request));
-    valueAPI = new ModelTransform<Value>(
-        api.cachedResource(RESOURCE_VALUES),
+    valueAPI = new RamCachedModelTransform<Value>(
+        api.ramCachedResource(RESOURCE_VALUES, confg.getCacheInvalidateTimeout()),
         (request) => new Value()..createFromRestRequest(request));
-    typeAPI = new ModelTransform<EpType>(
-        api.cachedResource(RESOURCE_TYPES),
+    typeAPI = new RamCachedModelTransform<EpType>(
+        api.ramCachedResource(RESOURCE_TYPES, confg.getCacheInvalidateTimeout()),
         (request) => new EpType()..createFromRestRequest(request));
-    typesAPI = new ModelTransform<Types>(
-        api.cachedResource(RESOURCE_TYPES),
+    typesAPI = new RamCachedModelTransform<Types>(
+        api.ramCachedResource(RESOURCE_TYPES, confg.getCacheInvalidateTimeout()),
         (request) => new Types()..createFromRestRequest(request));
-    endpointAPI = new ModelTransform<Endpoint>(
-        api.cachedResource(RESOURCE_ENDPOINTS),
+    endpointAPI = new RamCachedModelTransform<Endpoint>(
+        api.ramCachedResource(RESOURCE_ENDPOINTS, confg.getCacheInvalidateTimeout()),
         (request) => new Endpoint()..createFromRestRequest(request));
-    endpointsAPI = new ModelTransform<Endpoints>(
-        api.cachedResource(RESOURCE_ENDPOINTS),
+    endpointsAPI = new RamCachedModelTransform<Endpoints>(
+        api.ramCachedResource(RESOURCE_ENDPOINTS, confg.getCacheInvalidateTimeout()),
         (request) => new Endpoints()..createFromRestRequest(request));
-    pingAPI = new ModelTransform<Ping>(
-        api.cachedResource(RESOURCE_PING, 10000),
+    pingAPI = new NonCachedModelTransform<Ping>(
+        api.nonCachedResource(RESOURCE_PING),
         (request) => new Ping()..createFromRestRequest(request));
-  }
-  
-  String buildURI() {
-    var buffer = new StringBuffer();
-    buffer.write(Properties.PROTOCOL);
-    buffer.write("://");
-    buffer.write(Properties.HOSTNAME);
-    buffer.write(":");
-    buffer.write(Properties.PORT);
-    buffer.write("/");
-    buffer.write(Properties.VERSION);
-    buffer.write("/");
-    return buffer.toString();
   }
   
   /**
