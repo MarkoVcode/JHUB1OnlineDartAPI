@@ -2,7 +2,7 @@ library interface;
 
 import '../models/agents.dart';
 import '../models/agent.dart';
-//import '../models/user.dart';
+import '../models/user.dart';
 import '../models/endpoint.dart';
 import '../models/endpoints.dart';
 import '../models/types.dart';
@@ -21,220 +21,354 @@ Logger _logger = new Logger("restful.request_helper");
 
 class JHUB1OnlineServices {
   
-  static const String RESOURCE_AGENTS = "agents";
-  static const String RESOURCE_ENDPOINTS = "endpoints";
-  static const String RESOURCE_TYPES = "types";
-  static const String RESOURCE_VALUES = "values";
-  static const String RESOURCE_PING = "ping";
+  static const String _RESOURCE_AGENTS = "agents";
+  static const String _RESOURCE_ENDPOINTS = "endpoints";
+  static const String _RESOURCE_TYPES = "types";
+  static const String _RESOURCE_VALUES = "values";
+  static const String _RESOURCE_PING = "ping";
   
-  RamCachedModelTransform<Agent> agentAPI;
-  RamCachedModelTransform<Agents> agentsAPI; 
-  NonCachedModelTransform<Values> valuesAPI;
-  NonCachedModelTransform<Value> valueAPI;
-  RamCachedModelTransform<EpType> typeAPI;
-  RamCachedModelTransform<Types> typesAPI;
-  RamCachedModelTransform<Endpoint> endpointAPI;
-  RamCachedModelTransform<Endpoints> endpointsAPI;
-  NonCachedModelTransform<Ping> pingAPI;
+  RamCachedModelTransform<Agent> _agentAPI;
+  RamCachedModelTransform<Agents> _agentsAPI; 
+  NonCachedModelTransform<Values> _valuesAPI;
+  NonCachedModelTransform<Value> _valueAPI;
+  RamCachedModelTransform<EpType> _typeAPI;
+  RamCachedModelTransform<Types> _typesAPI;
+  RamCachedModelTransform<Endpoint> _endpointAPI;
+  RamCachedModelTransform<Endpoints> _endpointsAPI;
+  NonCachedModelTransform<Ping> _pingAPI;
+  
+  NonCachedModelTransform<RestRequest> _agentDeleteAPI;
+  NonCachedModelTransform<RestRequest> _valueDeleteAPI;
+  NonCachedModelTransform<RestRequest> _typeDeleteAPI;
+  NonCachedModelTransform<RestRequest> _endpointDeleteAPI;
   
   JHUB1OnlineServices(ServicesConfig confg) {
     var api = new RestApi(confg.getURI(), new JsonFormat());
     
-    agentAPI = new  RamCachedModelTransform<Agent>(
-        api.ramCachedResource(RESOURCE_AGENTS, confg.getCacheInvalidateTimeout()),
+    _agentAPI = new  RamCachedModelTransform<Agent>(
+        api.ramCachedResource(_RESOURCE_AGENTS, confg.getCacheInvalidateTimeout()),
         (request) => new Agent()..createFromRestRequest(request));   
-    agentsAPI = new RamCachedModelTransform<Agents>(
-        api.ramCachedResource(RESOURCE_AGENTS, confg.getCacheInvalidateTimeout()),
+    _agentsAPI = new RamCachedModelTransform<Agents>(
+        api.ramCachedResource(_RESOURCE_AGENTS, confg.getCacheInvalidateTimeout()),
         (request) => new Agents()..createFromRestRequest(request)); 
-    valuesAPI = new NonCachedModelTransform<Values>(
-        api.nonCachedResource(RESOURCE_VALUES),
+    _valuesAPI = new NonCachedModelTransform<Values>(
+        api.nonCachedResource(_RESOURCE_VALUES),
         (request) => new Values()..createFromRestRequest(request));
-    valueAPI = new NonCachedModelTransform<Value>(
-        api.nonCachedResource(RESOURCE_VALUES),
+    _valueAPI = new NonCachedModelTransform<Value>(
+        api.nonCachedResource(_RESOURCE_VALUES),
         (request) => new Value()..createFromRestRequest(request));
-    typeAPI = new RamCachedModelTransform<EpType>(
-        api.ramCachedResource(RESOURCE_TYPES, confg.getCacheInvalidateTimeout()),
+    _typeAPI = new RamCachedModelTransform<EpType>(
+        api.ramCachedResource(_RESOURCE_TYPES, confg.getCacheInvalidateTimeout()),
         (request) => new EpType()..createFromRestRequest(request));
-    typesAPI = new RamCachedModelTransform<Types>(
-        api.ramCachedResource(RESOURCE_TYPES, confg.getCacheInvalidateTimeout()),
+    _typesAPI = new RamCachedModelTransform<Types>(
+        api.ramCachedResource(_RESOURCE_TYPES, confg.getCacheInvalidateTimeout()),
         (request) => new Types()..createFromRestRequest(request));
-    endpointAPI = new RamCachedModelTransform<Endpoint>(
-        api.ramCachedResource(RESOURCE_ENDPOINTS, confg.getCacheInvalidateTimeout()),
+    _endpointAPI = new RamCachedModelTransform<Endpoint>(
+        api.ramCachedResource(_RESOURCE_ENDPOINTS, confg.getCacheInvalidateTimeout()),
         (request) => new Endpoint()..createFromRestRequest(request));
-    endpointsAPI = new RamCachedModelTransform<Endpoints>(
-        api.ramCachedResource(RESOURCE_ENDPOINTS, confg.getCacheInvalidateTimeout()),
+    _endpointsAPI = new RamCachedModelTransform<Endpoints>(
+        api.ramCachedResource(_RESOURCE_ENDPOINTS, confg.getCacheInvalidateTimeout()),
         (request) => new Endpoints()..createFromRestRequest(request));
-    pingAPI = new NonCachedModelTransform<Ping>(
-        api.nonCachedResource(RESOURCE_PING),
+    _pingAPI = new NonCachedModelTransform<Ping>(
+        api.nonCachedResource(_RESOURCE_PING),
         (request) => new Ping()..createFromRestRequest(request));
+    _agentDeleteAPI = new NonCachedModelTransform<RestRequest>(
+        api.nonCachedResource(_RESOURCE_AGENTS),
+        (request) => request);
+    _typeDeleteAPI = new NonCachedModelTransform<RestRequest>(
+        api.nonCachedResource(_RESOURCE_TYPES),
+        (request) => request);
+    _endpointDeleteAPI = new NonCachedModelTransform<RestRequest>(
+        api.nonCachedResource(_RESOURCE_ENDPOINTS),
+        (request) => request);
   }
   
   /**
-   * Retrives all available agents.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response object Agents which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     getAgents((agents) => populateAgents(agents));
+   * GET  
+   */  
+  
+  /**
+   * Retrives all available agents and executes provided callback function. 
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * The callback provided parameter must be of type Agents which
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     jhub1online.getAgents((agents) => populateAgents(agents));
    */
   void getAgents(Function callback(Agents agents), {bool invalidateCache: false}) {
-    agentsAPI.findAll(invalidateCache).then((agents) => callback(agents));
+    _agentsAPI.findAll(invalidateCache).then((agents) => callback(agents));
   }
   
   /**
-   * Retrives all available agents.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response object Agents which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *      jhub1online.getAgentsFuture().then((agents) => populateAgents(agents));
+   * Returns Future<Agents> with all available agents. 
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * In case of transport connection error the Agents object has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;Agent> futureAgents = jhub1online.getAgentsFuture();
    */
   Future<Agents> getAgentsFuture({bool invalidateCache: false}) {
-    return agentsAPI.findAll(invalidateCache);
+    return _agentsAPI.findAll(invalidateCache);
   }
   
   /**
-   * Retrives agent with requested ID.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response wrapper Agent which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   * Retrives agent with ID and executes provided callback function. 
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * The callback provided parameter must be of type Agent which
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
    *
-   *     getAgentByID((agent) => showAgentDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   *     jhub1online.getAgentByID((agent) => showAgentDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
    */
   void getAgentByID(Function callback(Agent agent), String id, {bool invalidateCache: false}) {
-    agentAPI.find(id, invalidateCache).then((agent) => callback(agent));
+    _agentAPI.find(id, invalidateCache).then((agent) => callback(agent));
   }
 
   /**
-   * Retrives agent with requested ID.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response wrapper Agent which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     Future<Agent> agent = jhub1online.getAgentByIDFuture("A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
-   *     agent.then((agent) => showAgentDetails(agent));
+   * Returns Future<Agent> with agent with requested ID. 
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * In case of transport connection error the Agent object has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;Agent> futureAgent = jhub1online.getAgentByIDFuture("A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
    */
   Future<Agent> getAgentByIDFuture(String id, {bool invalidateCache: false}) {
-    return agentAPI.find(id, invalidateCache);
+    return _agentAPI.find(id, invalidateCache);
   }
+  
   /**
-   * Retrives only values of new endpoints - the ones without assigned endpoint type.
-   * The response is not cached.
-   * The call back provided returns response wrapper Values which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     getNewValues((values) => doSomethingWithMyValues(values));
+   * Retrives only values of new endpoints - the ones without assigned endpoint type
+   * and executes provided callback function.
+   * The response is never cached.
+   * The callback provided parameter must be of type Values which
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     jhub1online.getNewValues((values) => doSomethingWithMyValues(values));
    */
   void getNewValues(Function callback(Values values)) {
-    valuesAPI.findAll().then((values) => callback(values));
+    _valuesAPI.findAll().then((values) => callback(values));
   }
 
   /**
-   * Retrives values of the all endpoints that belong to Agent identified by name.
-   * The response is not cached.
-   * The call back provided returns response wrapper Values which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   * Returns Future<Values> with values of new endpoints - the ones without
+   * assigned endpoint type.
+   * The response is never cached.
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;Values> futureNewValues = jhub1online.getNewValuesFuture();
+   */
+  Future<Values> getNewValuesFuture() {
+    return _valuesAPI.findAll();
+  }
+  
+  /**
+   * Retrives values of the all endpoints that belong to Agent identified
+   * by agentName.
+   * and executes provided callback function.
+   * The response is never cached.
+   * The callback provided parameter must be of type Values which
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
    *
-   *     getValuesByAgentName((values) => doSomethingWithMyValues(values), "tt56rsnixh");
+   *     jhub1online.getValuesByAgentName((values) => doSomethingWithMyValues(values), "tt56rsnixh");
    */
   void getValuesByAgentName(Function callback(Values values), String agentName) {
-    valuesAPI.find(agentName).then((values) => callback(values));
+    _valuesAPI.find(agentName).then((values) => callback(values));
   }
 
   /**
-   * Retrives value identified by address.
-   * The response is not cached.
-   * The call back provided returns response wrapper Value which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   * Returns Future<Values> with values of the all endpoints that belong to Agent
+   * identified by agentName. 
+   * The response is never cached.
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;Values> futureValues = jhub1online.getValuesByAgentNameFuture("tt56rsnixh");
+   */
+  Future<Values> getValuesByAgentNameFuture(String agentName) {
+    return _valuesAPI.find(agentName);
+  }
+  
+  /**
+   * Retrives last value of the endpoint identified by valueAddress
+   * and executes provided callback function.
+   * The response is never cached.
+   * The callback provided parameter must be of type Value which
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
    *
-   *     getValueByAddress((value) => doSomethingWithMyValues(value), "tt56rsnixh/testValuesdxv");
+   *     jhub1online.getValueByAddress((value) => doSomethingWithMyValues(value), "tt56rsnixh/testValuesdxv");
    */
   void getValueByAddress(Function callback(Value value), String valueAddress) {
-    valueAPI.find(valueAddress).then((value) => callback(value));
+    _valueAPI.find(valueAddress).then((value) => callback(value));
   }
 
   /**
-   * Retrives all endpoint types.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response object Types which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   * Returns Future<Value> with value of the endpoint identified by valueAddress
+   * The response is never cached.
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;Values> futureValue = jhub1online.getValueByAddressFuture("tt56rsnixh/testValuesdxv");
+   */
+  Future<Value> getValueByAddressFuture(String valueAddress) {
+    return _valueAPI.find(valueAddress);
+  }
+  
+  /**
+   * Retrives all endpoint types and executes provided callback function.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * The callback provided parameter must be of type Types which
+   * in case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
    *
-   *     getTypes((agents) => populateAgents(agents));
+   *     jhub1online.getTypes((agents) => populateAgents(agents));
    */
   void getTypes(Function callback(Types types), {bool invalidateCache: false}) {
-    typesAPI.findAll(invalidateCache).then((types) => callback(types));
+    _typesAPI.findAll(invalidateCache).then((types) => callback(types));
   }
   
   /**
-   * Retrives endpoint type with requested ID.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response wrapper EpType which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
+   * Returns Future<Types> with all types.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *      Future&lt;Values> futureTypes = jhub1online.getTypesFuture();
+   */
+  Future<Types> getTypesFuture({bool invalidateCache: false}) {
+    return _typesAPI.findAll(invalidateCache);
+  }
+  
+  /**
+   * Retrives endpoint type identified by ID and executes provided callback function.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * The callback provided parameter must be of type EpType which
+   * in case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
    *
-   *     getTypeByID((agent) => showAgentDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   *     jhub1online.getTypeByID((type) => showTypeDetails(type), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
    */
   void getTypeByID(Function callback(EpType type), String id, {bool invalidateCache: false}) {
-    typeAPI.find(id, invalidateCache).then((type) => callback(type));
+    _typeAPI.find(id, invalidateCache).then((type) => callback(type));
   }
   
-  
   /**
-   * Retrives all defined endpoints.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response wrapper Values which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     getEndopints((endpoints) => showEndpoints(endpoints));
+   * Returns Future<EpType> of type identified by ID.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;EpType> futureEpType = jhub1online.getTypeByIDFuture("A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
    */
-  void getEndopints(Function callback(Endpoints endpoints), {bool invalidateCache: false}) {
-    endpointsAPI.findAll(invalidateCache).then((endpoints) => callback(endpoints));
+  Future<EpType> getTypeByIDFuture(String id, {bool invalidateCache: false}) {
+    return _typeAPI.find(id, invalidateCache);
   }
-  
+
   /**
-   * Retrives endopint with requested ID.
-   * The response is cached and can be invalidated by setting invalidateCache: true
-   * The call back provided returns response wrapper Agent which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     getEndopintByID((agent) => showEndpointDetails(agent), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   * Retrives all defined endpoints and executes provided callback function.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * The callback provided parameter must be of type Endpoints which
+   * in case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     jhub1online.getEndopints((endpoints) => showEndpoints(endpoints));
    */
-  void getEndopintByID(Function callback(Endpoint endpoint), String id, {bool invalidateCache: false}) {
-    endpointAPI.find(id, invalidateCache).then((endpoint) => callback(endpoint));
+  void getEndpoints(Function callback(Endpoints endpoints), {bool invalidateCache: false}) {
+    _endpointsAPI.findAll(invalidateCache).then((endpoints) => callback(endpoints));
   }
   
   /**
-   * Ping returns real time values of all the important elements.
+   * Returns Future<Endpoints> with all endpoints.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *      Future&lt;Endpoints> futureEndpoints = jhub1online.getEndpointsFuture();
+   */
+  Future<Endpoints> getEndpointsFuture({bool invalidateCache: false}) {
+    return _endpointsAPI.findAll(invalidateCache);
+  }
+  
+  /**
+   * Retrives single endpoint identified by its ID.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * The callback provided parameter must be of type Endpoint which
+   * in case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     jhub1online.getEndpointByID((endpoint) => showEndpoint(endpoint), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
+  void getEndpointByID(Function callback(Endpoint endpoint), String id, {bool invalidateCache: false}) {
+    _endpointAPI.find(id, invalidateCache).then((endpoint) => callback(endpoint));
+  }
+  
+  /**
+   * Returns Future<Endpoint> with endpoint identified by its ID.
+   * The response is cached, cache can be invalidated by setting invalidateCache: true
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *      Future&lt;Endpoint> futureEndpoint = jhub1online.getEndpointByIDFuture("A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   */
+  Future<Endpoint> getEndpointByIDFuture(String id, {bool invalidateCache: false}) {
+    return _endpointAPI.find(id, invalidateCache);
+  }
+  
+  /**
+   * Ping returns real time values of all the important elements also
+   * provides informations about events.
    * The response is never cached.
-   * The call back provided returns response wrapper Ping which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     ping((ping) => processPingData(ping));
+   * The callback provided parameter must be of type Ping which
+   * in case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     jhub1online.ping((ping) => processPingData(ping));
    */
   void ping(Function callback(Ping ping)) {
-    pingAPI.findAll().then((ping) => callback(ping));
+    _pingAPI.findAll().then((ping) => callback(ping));
   }
   
   /**
-   * Ping returns real time values of all the important elements.
+   * Returns Future<Ping> which provides real time values of all the important
+   * elements also informations about events.
    * The response is never cached.
-   * The call back provided returns response wrapper Ping which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     pingFuture().then((ping) => processPingData(ping));
+   * In case of transport connection error has hasError flag set 'true'.
+   * Check RestRequest object for more details (getRestRequest()).
+   * For example:
+   * 
+   *     Future&lt;Ping> futurePing = jhub1online.pingFuture();
    */
   Future<Ping> pingFuture() {
-    return pingAPI.findAll();
+    return _pingAPI.findAll();
   }
+ 
+  /**
+   * DELETE  
+   */  
   
-  
- // void putEndpoint(Function callback(Endpoint endpoint), Endpoint endpoint) {
-    
- // }
-  
-//  void putAgent(Function callback(Agent agent), Agent agent) {
-    
- // }
-   
   /**
    * Deletes the agent with the agentID,
    * The call back provided returns response wrapper Delete which
@@ -242,9 +376,29 @@ class JHUB1OnlineServices {
    *
    *     deleteAgent((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
    */
-  //void deleteAgent(String agentID) {
-    
- // }
+  Future<RestRequest> deleteAgentByID(String id) {
+    return _agentDeleteAPI.delete(id);
+  }
+  
+  Future<RestRequest> deleteAgent(Agent agent) {
+    return _agentDeleteAPI.delete(agent.getID());
+  }
+  
+  Future<RestRequest> deleteTypeByID(String id) {
+    return _typeDeleteAPI.delete(id);
+  }
+  
+  Future<RestRequest> deleteType(EpType type) {
+    return _typeDeleteAPI.delete(type.getID());
+  }
+  
+  Future<RestRequest> deleteEndpointByID(String id) {
+    return _endpointDeleteAPI.delete(id);
+  }
+  
+  Future<RestRequest> deleteEndpoint(Endpoint ep) {
+    return _endpointDeleteAPI.delete(ep.getID());
+  }
   
   /**
    * Deletes the endpoint with the endpointID,
@@ -268,5 +422,15 @@ class JHUB1OnlineServices {
   //void deleteNewEndpoint(Function callback(Delete delete), String newEndpointID) {
     
     
-  //}
+  //}  
+  
+ // void putEndpoint(Function callback(Endpoint endpoint), Endpoint endpoint) {
+    
+ // }
+  
+//  void putAgent(Function callback(Agent agent), Agent agent) {
+    
+ // }
+   
+
 }

@@ -24,7 +24,7 @@ class NonCachedModelTransform<M> {
     return _resource.query(params).then(_transform);
   }
   
-  Future<M> delete(id) {
+  Future<M> delete(String id) {
     return _resource.delete(id).then(_transform);
   }
   
