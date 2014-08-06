@@ -81,6 +81,9 @@ class JHUB1OnlineServices {
     _endpointDeleteAPI = new NonCachedModelTransform<RestRequest>(
         api.nonCachedResource(_RESOURCE_ENDPOINTS),
         (request) => request);
+    _valueDeleteAPI = new NonCachedModelTransform<RestRequest>(
+        api.nonCachedResource(_RESOURCE_VALUES),
+        (request) => request);
   }
   
   /**
@@ -370,67 +373,88 @@ class JHUB1OnlineServices {
    */  
   
   /**
-   * Deletes the agent with the agentID,
-   * The call back provided returns response wrapper Delete which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     deleteAgent((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   * Returns Future<RestRequest>. 
+   * Deletes the agent with the agentID.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
    */
   Future<RestRequest> deleteAgentByID(String id) {
     return _agentDeleteAPI.delete(id);
   }
   
+  /**
+   * Returns Future<RestRequest>. 
+   * Deletes the resource reflected in Agent object.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
+   */
   Future<RestRequest> deleteAgent(Agent agent) {
     return _agentDeleteAPI.delete(agent.getID());
   }
   
-  Future<RestRequest> deleteTypeByID(String id) {
-    return _typeDeleteAPI.delete(id);
+  /**
+   * Returns Future<RestRequest>. 
+   * Deletes the type resource with the typeID.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
+   */
+  Future<RestRequest> deleteTypeByID(String typeID) {
+    return _typeDeleteAPI.delete(typeID);
   }
   
+  /**
+   * Returns Future<RestRequest>. 
+   * Deletes the resource reflected in EpType object.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
+   */
   Future<RestRequest> deleteType(EpType type) {
     return _typeDeleteAPI.delete(type.getID());
   }
   
-  Future<RestRequest> deleteEndpointByID(String id) {
-    return _endpointDeleteAPI.delete(id);
+  /**
+   * Returns Future<RestRequest>. 
+   * Deletes the endpoint resource with the endpointID.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
+   */
+  Future<RestRequest> deleteEndpointByID(String endpointID) {
+    return _endpointDeleteAPI.delete(endpointID);
   }
   
+  /**
+   * Returns Future<RestRequest>. 
+   * Deletes the resource reflected in Endpoint object.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
+   */
   Future<RestRequest> deleteEndpoint(Endpoint ep) {
     return _endpointDeleteAPI.delete(ep.getID());
   }
   
   /**
-   * Deletes the endpoint with the endpointID,
-   * The call back provided returns response wrapper Delete which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     deleteEndpoint((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   * Returns Future<RestRequest>. 
+   * Deletes the value resource with the valueID.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
    */
- // void deleteEndpoint(Function callback(Delete delete), String endpointID) {
-    
-    
- // }
-
+  Future<RestRequest> deleteValueByID(String valueID) {
+    return _valueDeleteAPI.delete(valueID);
+  }
+  
   /**
-   * Deletes the new endpoint with the newEndpointID,
-   * The call back provided returns response wrapper Delete which
-   * in case of error holds RequestFault object and has hasError() flag set 'true'.
-   *
-   *     deleteNewEndpoint((delete) => confirmDeleted(delete), "A-1E6B9-5P8TQ-HJ9JKDL0Y.733");
+   * Returns Future<RestRequest>. 
+   * Deletes the resource reflected in Value object.
+   * The DELETE is synchronous and always return code 200 regardles the actual resource existence.
+   * In case of transport connection error has hasError flag set 'true'.
    */
-  //void deleteNewEndpoint(Function callback(Delete delete), String newEndpointID) {
-    
-    
-  //}  
+  Future<RestRequest> deleteValue(Value value) {
+    return _valueDeleteAPI.delete(value.getID());
+  }
   
- // void putEndpoint(Function callback(Endpoint endpoint), Endpoint endpoint) {
-    
- // }
+  /**
+   * POST  
+   */
   
-//  void putAgent(Function callback(Agent agent), Agent agent) {
-    
- // }
-   
-
+  
 }
